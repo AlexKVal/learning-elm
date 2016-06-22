@@ -94,3 +94,17 @@ isElement x tree =
 
         Node v left right ->
             x == v || (isElement x left) || (isElement x right)
+
+
+
+-- 4 General fold function for trees.
+
+
+fold : (a -> b -> b) -> b -> Tree a -> b
+fold f x tree =
+    case tree of
+        Empty ->
+            x
+
+        Node v left right ->
+            fold f (fold f (f v x) left) right
