@@ -101,10 +101,17 @@ isElement x tree =
 
 
 fold : (a -> b -> b) -> b -> Tree a -> b
-fold f x tree =
+fold func initialValue tree =
     case tree of
         Empty ->
-            x
+            initialValue
 
-        Node v left right ->
-            fold f (fold f (f v x) left) right
+        Node value left right ->
+            let
+                nextFold =
+                    func value initialValue
+
+                leftFold =
+                    fold func nextFold left
+            in
+                fold func leftFold right
