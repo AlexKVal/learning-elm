@@ -1,4 +1,4 @@
-module Main exposing (..)
+module Gif exposing (Model, init, Msg, update, view, subscriptions)
 
 import Html exposing (..)
 import Html.App
@@ -14,7 +14,7 @@ main =
         { init = init "cats"
         , update = update
         , view = view
-        , subscriptions = \_ -> Sub.none
+        , subscriptions = subscriptions
         }
 
 
@@ -51,6 +51,11 @@ update msg model =
             ( model, Cmd.none )
 
 
+subscriptions : Model -> Sub Msg
+subscriptions model =
+    Sub.none
+
+
 getRandomGif : String -> Cmd Msg
 getRandomGif topic =
     let
@@ -70,5 +75,17 @@ view model =
     div []
         [ button [ onClick MorePlease ] [ text ("More " ++ model.topic ++ " Please!") ]
         , hr [] []
-        , img [ src model.gifUrl ] []
+        , img [ imgStyle model.gifUrl ] []
+        ]
+
+
+imgStyle : String -> Attribute Msg
+imgStyle url =
+    style
+        [ ( "display", "inline-block" )
+        , ( "width", "200px" )
+        , ( "height", "200px" )
+        , ( "background-position", "center center" )
+        , ( "background-size", "cover" )
+        , ( "background-image", ("url('" ++ url ++ "')") )
         ]
